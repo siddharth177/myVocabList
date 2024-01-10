@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "313084539240",
+    "project_id": "dictionary-3a6a4",
+    "storage_bucket": "dictionary-3a6a4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:313084539240:android:eb0621d28948d96965a6dd",
+        "android_client_info": {
+          "package_name": "com.example.personal_dictionary"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBuHs0vekw1WMISj45u0ODHBnQkBeKrnTc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
