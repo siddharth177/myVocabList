@@ -1,8 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:personal_dictionary/screens/auth.dart';
 import 'package:personal_dictionary/screens/email_verification.dart';
+import 'package:personal_dictionary/utils/colors_and_theme.dart';
+import 'package:personal_dictionary/utils/firebase.dart';
+import 'package:personal_dictionary/widgets/loading.dart';
 
 import 'firebase_options.dart';
 
@@ -11,38 +13,39 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   runApp(const MyApp());
 }
 
-var kColorScheme =
-// ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 206, 235, 199));
-    ColorScheme.fromSeed(seedColor: Colors.green);
-var kDarkColorScheme = kColorScheme;
-var kThemeData = ThemeData().copyWith(
-  colorScheme: kColorScheme,
-);
-var kDartThemeData = kThemeData;
-
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  @override
+  State<StatefulWidget> createState() {
+    return _MyAppState();
+  }
+}
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: kThemeData,
       darkTheme: kDartThemeData,
+      themeMode: ThemeMode.system,
+      debugShowCheckedModeBanner: false,
       home: StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(),
+        stream: firebaseAuthInstance.authStateChanges(),
         builder: (ctx, snapshot) {
           if (snapshot.hasData) {
-            return EmailVerificationScreen();
+            return const EmailVerificationScreen();
           }
 
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
+            return const LoadingWidget();
           }
 
-          return AuthScreen();
+          return const AuthScreen();
         },
       ),
     );

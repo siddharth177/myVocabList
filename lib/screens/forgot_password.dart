@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:personal_dictionary/widgets/loading.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
@@ -26,7 +27,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     showDialog(
         context: context,
         builder: (context) => Center(
-              child: CircularProgressIndicator(),
+              child: LoadingWidget(),
             ));
 
     try {

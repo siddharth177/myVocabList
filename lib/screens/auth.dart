@@ -1,9 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:personal_dictionary/utils/firebase.dart';
 
 import 'forgot_password.dart';
-
-final _firebaseAuthInstance = FirebaseAuth.instance;
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -30,17 +29,18 @@ class _AuthScreenState extends State<AuthScreen> {
     try {
       if (_isLogin) {
         final userCredentials =
-            await _firebaseAuthInstance.signInWithEmailAndPassword(
+            await firebaseAuthInstance.signInWithEmailAndPassword(
                 email: _enteredEmail, password: _enteredPassword);
       } else {
         final userCredentials =
-            await _firebaseAuthInstance.createUserWithEmailAndPassword(
+            await firebaseAuthInstance.createUserWithEmailAndPassword(
                 email: _enteredEmail, password: _enteredPassword);
       }
     } on FirebaseAuthException catch (error) {
       ScaffoldMessenger.of(context).clearSnackBars();
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(error.message ?? 'Authentication Failed')));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(
+              error.message ?? 'Authentication Failed. Please Try Again!')));
     }
   }
 
