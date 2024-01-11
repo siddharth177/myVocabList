@@ -35,6 +35,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           .sendPasswordResetEmail(email: emailController.text.trim());
       Navigator.of(context).popUntil((route) => route.isFirst);
       //clear prior snackbar
+      // ScaffoldMessenger.of(context)
+      //     .showSnackBar(SnackBar(content: Text('Password reset sent')));
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text('Password reset sent')));
     } on FirebaseAuthException catch (error) {

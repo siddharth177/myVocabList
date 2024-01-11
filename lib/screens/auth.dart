@@ -1,8 +1,12 @@
+import 'dart:ui';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:personal_dictionary/utils/firebase.dart';
+import 'package:rive/rive.dart';
 
-import 'forgot_password.dart';
+import '../widgets/forgot_password_button.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -47,135 +51,150 @@ class _AuthScreenState extends State<AuthScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: Colors.greenAccent,
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            // opacity: 0.5,
-            image: AssetImage('assets/images/vocab1.avif'),
-            fit: BoxFit.cover,
-          ),
-        ),
-        alignment: Alignment.center,
-        child: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Card(
-                  margin: const EdgeInsets.all(20),
-                  child: SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Form(
-                        key: _formKey,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            TextFormField(
-                              decoration: const InputDecoration(
-                                  labelText: 'Email Address'),
-                              keyboardType: TextInputType.emailAddress,
-                              autocorrect: false,
-                              textCapitalization: TextCapitalization.none,
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              validator: (value) {
-                                if (value == null ||
-                                    value.trim().length <= 4 ||
-                                    !value.contains('@')) {
-                                  return 'Email Address is invalid';
-                                }
-
-                                return null;
-                              },
-                              onSaved: (value) {
-                                _enteredEmail = value!;
-                              },
-                            ),
-                            TextFormField(
-                              decoration:
-                                  const InputDecoration(labelText: 'Password'),
-                              obscureText: true,
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              validator: (value) {
-                                if (value == null || value.trim().length <= 6) {
-                                  return 'Password must be least 6 character long.';
-                                }
-
-                                if (value.trim().length > 8) {
-                                  return 'Password must be less than 8 characters';
-                                }
-
-                                return null;
-                              },
-                              onSaved: (value) {
-                                _enteredPassword = value!;
-                              },
-                            ),
-                            ForgotPasswordButton(isLogin: _isLogin),
-                            // if(_isLogin) {
-                            // ElevatedButton(
-                            //     onPressed: () {
-                            //       Navigator.of(context).push(MaterialPageRoute(
-                            //           builder: (context) =>
-                            //               const ForgotPasswordScreen()));
-                            //     },
-                            //     child: const Text('Forgot Password?')),
-                            const SizedBox(height: 12),
-                            ElevatedButton(
-                              onPressed: _submit,
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Theme.of(context)
-                                    .colorScheme
-                                    .primaryContainer,
-                              ),
-                              child: Text(_isLogin ? 'Login' : 'Signup'),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                setState(() {
-                                  _isLogin = !_isLogin;
-                                });
-                              },
-                              child: Text(_isLogin
-                                  ? 'Create an account'
-                                  : 'I already have an account'),
-                            ),
-                          ],
-                        ),
+      body: Stack(
+        children: [
+          const RiveAnimation.asset('assets/animations/rive/spin.riv'),
+          Positioned.fill(
+              child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 20, sigmaY: 10),
+            child: const SizedBox(),
+          )),
+          SafeArea(
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Text(
+                      'Welcome to Your Vocab List',
+                      style: TextStyle(
+                        fontSize: 55,
+                        fontFamily: GoogleFonts.poppins().fontFamily,
+                        height: 1.2,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
                   ),
-                ),
-              ],
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Text(
+                      _isLogin
+                          ? 'Login to Enjoy using the App'
+                          : 'Sign up to Proceed',
+                      style: TextStyle(
+                        fontSize: 20,
+                        height: 1.2,
+                        fontFamily: GoogleFonts.openSans().fontFamily,
+                        fontWeight: FontWeight.w300,
+                      ),
+                    ),
+                  ),
+                  SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Card(
+                          elevation: 40,
+                          color: Colors.white.withOpacity(0.65),
+                          margin: const EdgeInsets.all(20),
+                          child: SingleChildScrollView(
+                            child: Padding(
+                              padding: const EdgeInsets.all(16),
+                              child: Form(
+                                key: _formKey,
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    TextFormField(
+                                      decoration: const InputDecoration(
+                                          labelText: 'Email Address'),
+                                      keyboardType: TextInputType.emailAddress,
+                                      autocorrect: false,
+                                      textCapitalization:
+                                          TextCapitalization.none,
+                                      autovalidateMode:
+                                          AutovalidateMode.onUserInteraction,
+                                      validator: (value) {
+                                        if (value == null ||
+                                            value.trim().length <= 4 ||
+                                            !value.contains('@')) {
+                                          return 'Email Address is invalid';
+                                        }
+
+                                        return null;
+                                      },
+                                      onSaved: (value) {
+                                        _enteredEmail = value!;
+                                      },
+                                    ),
+                                    TextFormField(
+                                      decoration: const InputDecoration(
+                                          labelText: 'Password'),
+                                      obscureText: true,
+                                      autovalidateMode:
+                                          AutovalidateMode.onUserInteraction,
+                                      validator: (value) {
+                                        if (value == null ||
+                                            value.trim().length <= 6) {
+                                          return 'Password must be atleast 6 character long.';
+                                        }
+
+                                        if (value.trim().length > 8) {
+                                          return 'Password must be less than 9 characters.';
+                                        }
+
+                                        return null;
+                                      },
+                                      onSaved: (value) {
+                                        _enteredPassword = value!;
+                                      },
+                                    ),
+                                    SizedBox(
+                                      height: 12,
+                                    ),
+                                    ForgotPasswordButton(isLogin: _isLogin),
+                                    const SizedBox(height: 12),
+                                    ElevatedButton(
+                                      onPressed: _submit,
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Theme.of(context)
+                                            .colorScheme
+                                            .primaryContainer,
+                                      ),
+                                      child:
+                                          Text(_isLogin ? 'Login' : 'Signup'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          _isLogin = !_isLogin;
+                                        });
+                                      },
+                                      child: Text(_isLogin
+                                          ? 'Create an account'
+                                          : 'I already have an account'),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
+        ],
       ),
-    );
-  }
-}
-
-class ForgotPasswordButton extends StatelessWidget {
-  const ForgotPasswordButton({this.isLogin, super.key});
-
-  final isLogin;
-
-  @override
-  Widget build(BuildContext context) {
-    if (isLogin) {
-      return ElevatedButton(
-          onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => const ForgotPasswordScreen()));
-          },
-          child: const Text('Forgot Password?'));
-    }
-
-    return const SizedBox(
-      height: 0,
     );
   }
 }
