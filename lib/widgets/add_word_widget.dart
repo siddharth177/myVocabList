@@ -1,6 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:personal_dictionary/utils/firebase.dart';
 
 import '../models/word_meaning.dart';
 
@@ -24,7 +23,7 @@ class AddWordWidget extends StatefulWidget {
   List<String> examples = [];
 
   @override
-  State<StatefulWidget> createState() {
+  State<AddWordWidget> createState() {
     return _AddWordWidgetState();
   }
 }
@@ -50,39 +49,64 @@ class _AddWordWidgetState extends State<AddWordWidget> {
     _usages = widget.usages;
     _examples = widget.examples;
 
-    print('meanings $_meanings');
+    _wordController.text = _word;
+    _phonaticController.text = _phonatic;
+    _rootController.text = _root;
   }
 
-  TextEditingController _controller = TextEditingController();
+  final TextEditingController _wordController = TextEditingController();
+  final TextEditingController _rootController = TextEditingController();
+  final TextEditingController _phonaticController = TextEditingController();
+  final TextEditingController _meaningController = TextEditingController();
+  final TextEditingController _usageController = TextEditingController();
+  final TextEditingController _exampleController = TextEditingController();
 
   Future<void> _onFormSubmit() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
-      var db = FirebaseFirestore.instance;
+      var newWord = WordMeaning(
+        word: _word,
+        meanings: _meanings,
+        usages: _usages,
+        examples: _examples,
+        wordClass: _wordClass,
+        root: _root,
+        phonatic: _phonatic,
+      );
 
-      var toadd = WordMeaning(
-          word: _word,
-          meanings: _meanings,
-          usages: _usages,
-          examples: _examples,
-          wordClass: _wordClass,
-          root: _root,
-          phonatic: _phonatic);
-
-      var uid = FirebaseAuth.instance.currentUser?.uid;
-      final res = await db
+      var uid = firebaseAuthInstance.currentUser?.uid;
+      final res = await firestoreInstance
           .collection('users')
           .doc(uid)
           .collection('vocabList')
           .withConverter(
               fromFirestore: WordMeaning.fromFirestore,
-              toFirestore: (WordMeaning toadd, options) => toadd.toFirestore())
+              toFirestore: (WordMeaning word, options) => word.toFirestore())
           .doc(_word)
-          .set(toadd);
+          .set(newWord);
 
       Navigator.of(context).pop();
     }
+  }
+
+  void _clearEntries() {
+    _wordController.clear();
+    _phonaticController.clear();
+    _rootController.clear();
+    _meaningController.clear();
+    _exampleController.clear();
+    _usageController.clear();
+
+    setState(() {
+      _word = '';
+      _phonatic = '';
+      _root = '';
+      _wordClass = WordClass.none;
+      _meanings = [];
+      _usages = [];
+      _examples = [];
+    });
   }
 
   @override
@@ -94,57 +118,86 @@ class _AddWordWidgetState extends State<AddWordWidget> {
               .top),
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Add Your Word"),
+          title: const Text("Add To Your Vocab"),
         ),
         body: Form(
           key: _formKey,
           child: Padding(
-            padding: EdgeInsets.all(20),
-            // .copyWith(bottom: MediaQuery.of(context).viewInsets.bottom),
+            padding: const EdgeInsets.all(20),
             child: ListView(
-              physics: BouncingScrollPhysics(),
+              physics: const BouncingScrollPhysics(),
               children: [
-                TextFormField(
-                  initialValue: _word.isNotEmpty ? _word : '',
-                  decoration: InputDecoration(
-                    label: Text("Word"),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.trim().length <= 1) {
-                      return 'Word cannot be empty';
-                    }
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        controller: _wordController,
+                        decoration: const InputDecoration(
+                          label: Text("Word"),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.trim().length <= 1) {
+                            return 'Word cannot be empty';
+                          }
 
-                    return null;
-                  },
-                  onSaved: (value) {
-                    _word = value!;
-                  },
+                          return null;
+                        },
+                        onSaved: (value) {
+                          _word = value!;
+                        },
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    Expanded(
+                      child: TextFormField(
+                        controller: _rootController,
+                        decoration: const InputDecoration(
+                          label: Text("Root"),
+                        ),
+                        onSaved: (value) {
+                          _root = value!;
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    DropdownMenu<WordClass>(
-                      initialSelection: _wordClass != WordClass.none
-                          ? _wordClass
-                          : WordClass.none,
-                      // controller: colorController,
-                      requestFocusOnTap: true,
-                      label: Text('Word Class'),
-                      dropdownMenuEntries: WordClass.values
-                          .map<DropdownMenuEntry<WordClass>>((e) =>
-                              DropdownMenuEntry<WordClass>(
-                                  value: e, label: e.name))
-                          .toList(),
-                      onSelected: (value) {
-                        _wordClass = value!;
-                      },
+                    Expanded(
+                      child: DropdownMenu<WordClass>(
+                        initialSelection: _wordClass != WordClass.none
+                            ? _wordClass
+                            : WordClass.none,
+                        requestFocusOnTap: true,
+                        label: const Text('Word Class'),
+                        dropdownMenuEntries: WordClass.values
+                            .map<DropdownMenuEntry<WordClass>>((e) =>
+                                DropdownMenuEntry<WordClass>(
+                                    value: e, label: e.name))
+                            .toList(),
+                        onSelected: (value) {
+                          _wordClass = value!;
+                        },
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 40,
                     ),
                     Expanded(
                       child: TextFormField(
-                        initialValue: _phonatic,
-                        decoration: InputDecoration(
+                        controller: _phonaticController,
+                        decoration: const InputDecoration(
                           label: Text('Phonatic'),
                         ),
                         onSaved: (value) {
@@ -164,29 +217,95 @@ class _AddWordWidgetState extends State<AddWordWidget> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     TextFormField(
-                      // initialValue: ,
-                      controller: _controller,
-                      decoration: InputDecoration(
+                      controller: _meaningController,
+                      decoration: const InputDecoration(
                         label: Text('Meanings'),
                       ),
                       onFieldSubmitted: (value) {
                         if (_meanings.isEmpty && widget.meanings.isNotEmpty) {
                           _meanings = widget.meanings;
                         }
-                        _meanings.add(_controller.text);
-                        _controller.clear();
+                        _meanings.add(_meaningController.text);
+                        _meaningController.clear();
                       },
                     ),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: _meanings.map((e) => Text(e)).toList(),
-                    )
+                      children:
+                          _meanings.map((meaning) => Text(meaning)).toList(),
+                    ),
                   ],
                 ),
-                ElevatedButton(
-                  onPressed: _onFormSubmit,
-                  child: const Text('Add Item'),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    TextFormField(
+                      controller: _usageController,
+                      decoration: const InputDecoration(
+                        label: Text('Usages'),
+                      ),
+                      onFieldSubmitted: (value) {
+                        if (_usages.isEmpty && widget.usages.isNotEmpty) {
+                          _usages = widget.usages;
+                        }
+                        _usages.add(_usageController.text);
+                        _usageController.clear();
+                      },
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children:
+                          _usages.map((meaning) => Text(meaning)).toList(),
+                    ),
+                  ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    TextFormField(
+                      controller: _exampleController,
+                      decoration: const InputDecoration(
+                        label: Text('Examples'),
+                      ),
+                      onFieldSubmitted: (value) {
+                        if (_examples.isEmpty && widget.examples.isNotEmpty) {
+                          _examples = widget.examples;
+                        }
+                        _examples.add(_exampleController.text);
+                        _exampleController.clear();
+                      },
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children:
+                          _examples.map((meaning) => Text(meaning)).toList(),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    ElevatedButton(
+                      onPressed: _clearEntries,
+                      child: const Text('Clear'),
+                    ),
+                    ElevatedButton(
+                      onPressed: _onFormSubmit,
+                      child: const Text('Add Word'),
+                    ),
+                  ],
                 )
               ],
             ),
