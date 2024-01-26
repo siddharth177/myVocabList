@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
-var kColorScheme =
+var kLightColorScheme =
     ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 207, 214, 250));
-var kDarkColorScheme = kColorScheme;
+var kDarkColorScheme = kLightColorScheme;
 
-var kThemeData = ThemeData().copyWith(
-  colorScheme: kColorScheme,
+var kLightThemeData = ThemeData().copyWith(
+  colorScheme: kLightColorScheme,
+  brightness: Brightness.light,
+);
+var kDarkThemeData = kLightThemeData.copyWith(
   brightness: Brightness.dark,
 );
-var kDartThemeData = kThemeData;
