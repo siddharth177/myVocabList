@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:personal_dictionary/utils/firebase.dart';
 import 'package:personal_dictionary/widgets/word_display_widget.dart';
 
 import '../models/word_meaning.dart';
@@ -179,13 +180,8 @@ class _WordsListScreenState extends State<WordsListScreen> {
               width: 8,
             ),
             IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.download),
-              color: Colors.blue,
-            ),
-            IconButton(
                 onPressed: () {
-                  FirebaseAuth.instance.signOut();
+                  firebaseAuthInstance.signOut();
                 },
                 icon: Icon(Icons.logout))
           ],

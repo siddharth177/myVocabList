@@ -10,7 +10,6 @@ class LoadingWidget extends StatefulWidget {
   }
 }
 
-// TODO: convert it to overlay
 class _LoadingWidgetState extends State<LoadingWidget> {
   @override
   Widget build(BuildContext context) {

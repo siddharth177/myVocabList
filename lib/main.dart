@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:personal_dictionary/providers/theme_provider.dart';
 import 'package:personal_dictionary/screens/authentication/auth.dart';
-import 'package:personal_dictionary/screens/email_verification.dart';
+import 'package:personal_dictionary/screens/authentication/email_verification.dart';
 import 'package:personal_dictionary/utils/colors_and_theme.dart';
 import 'package:personal_dictionary/utils/firebase.dart';
 import 'package:personal_dictionary/widgets/loading.dart';
