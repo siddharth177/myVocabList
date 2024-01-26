@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:personal_dictionary/screens/auth.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:personal_dictionary/providers/theme_provider.dart';
+import 'package:personal_dictionary/screens/authentication/auth.dart';
 import 'package:personal_dictionary/screens/email_verification.dart';
 import 'package:personal_dictionary/utils/colors_and_theme.dart';
 import 'package:personal_dictionary/utils/firebase.dart';
@@ -14,25 +16,31 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(const MyApp());
+  runApp(
+    const ProviderScope(
+      child: MyApp(),
+    ),
+  );
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends ConsumerStatefulWidget {
   const MyApp({super.key});
 
   @override
-  State<StatefulWidget> createState() {
+  ConsumerState<MyApp> createState() {
     return _MyAppState();
   }
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends ConsumerState<MyApp> {
   @override
   Widget build(BuildContext context) {
+    final themeMode = ref.watch(themeModeProvider);
+
     return MaterialApp(
       theme: kLightThemeData,
       darkTheme: kDarkThemeData,
-      themeMode: ThemeMode.system,
+      themeMode: themeMode,
       debugShowCheckedModeBanner: false,
       home: StreamBuilder(
         stream: firebaseAuthInstance.authStateChanges(),
