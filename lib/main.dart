@@ -30,8 +30,8 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: kThemeData,
-      darkTheme: kDartThemeData,
+      theme: kLightThemeData,
+      darkTheme: kDarkThemeData,
       themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
       home: StreamBuilder(
