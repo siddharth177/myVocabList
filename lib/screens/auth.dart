@@ -9,7 +9,9 @@ import 'package:rive/rive.dart';
 import '../widgets/loading.dart';
 
 class AuthScreen extends StatefulWidget {
-  const AuthScreen({super.key});
+  const AuthScreen({required this.hasData, super.key});
+
+  final bool hasData;
 
   @override
   State<StatefulWidget> createState() {
@@ -169,8 +171,17 @@ class _AuthScreenState extends State<AuthScreen> {
                                                     : null,
                                           ),
                                           ElevatedButton(
-                                              onPressed: _resetPassword,
-                                              child: Text('Reset Password')),
+                                            onPressed: _resetPassword,
+                                            child: Text('Reset Password'),
+                                          ),
+                                          ElevatedButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                _isForgotPassword = false;
+                                              });
+                                            },
+                                            child: Text('Back'),
+                                          ),
                                         ],
                                       ),
                                     )
