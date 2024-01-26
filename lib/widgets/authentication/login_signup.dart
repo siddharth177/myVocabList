@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:personal_dictionary/providers/auth_provider.dart';
+import 'package:personal_dictionary/utils/snackbar_messaging.dart';
 
 import '../../utils/firebase.dart';
 
@@ -38,10 +39,8 @@ class _LoginSignUpWidgetState extends ConsumerState<LoginSignUpWidget> {
                 email: _enteredEmail, password: _enteredPassword);
       }
     } on FirebaseAuthException catch (error) {
-      ScaffoldMessenger.of(context).clearSnackBars();
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(
-              error.message ?? 'Authentication Failed. Please Try Again!')));
+      clearAndDisplaySnackbar(
+          context, error.message ?? 'Authentication Failed. Please Try Again!');
     }
   }
 

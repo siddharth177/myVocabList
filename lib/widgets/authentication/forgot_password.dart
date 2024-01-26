@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:personal_dictionary/providers/auth_provider.dart';
+import 'package:personal_dictionary/utils/snackbar_messaging.dart';
 
 import '../loading.dart';
 
@@ -47,13 +48,10 @@ class _ForgotPasswordWidgetState extends ConsumerState<ForgotPasswordWidget> {
             .sendPasswordResetEmail(email: emailController.text.trim());
         Navigator.of(context).popUntil((route) => route.isFirst);
         forgotPasswordNotifier.updateForgotPasswordProvider(false);
-        ScaffoldMessenger.of(context).clearSnackBars();
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Password reset sent')));
+        clearAndDisplaySnackbar(context, 'Email for password reset sent');
       } on FirebaseAuthException catch (error) {
-        ScaffoldMessenger.of(context).clearSnackBars();
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(error.message ?? 'Password reset Failed')));
+        clearAndDisplaySnackbar(context,
+            error.message ?? 'Password reset Failed! Please try again.');
         Navigator.of(context).pop();
       }
     }

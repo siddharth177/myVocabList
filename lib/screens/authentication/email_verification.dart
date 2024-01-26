@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:personal_dictionary/screens/words_list.dart';
+import 'package:personal_dictionary/utils/snackbar_messaging.dart';
 import 'package:rive/rive.dart';
 
 import '../../utils/firebase.dart';
@@ -49,9 +50,7 @@ class _EmailVerificationScreenState
       final user = firebaseAuthInstance.currentUser!;
       await user.sendEmailVerification();
 
-      ScaffoldMessenger.of(context).clearSnackBars();
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Verification Mail Sent')));
+      clearAndDisplaySnackbar(context, 'Verification Mail Sent');
 
       setState(() {
         canResentEmail = false;
@@ -61,9 +60,8 @@ class _EmailVerificationScreenState
         canResentEmail = true;
       });
     } on FirebaseAuthException catch (error) {
-      ScaffoldMessenger.of(context).clearSnackBars();
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(error.message ?? 'Authentication Failed')));
+      clearAndDisplaySnackbar(
+          context, error.message ?? 'Authentication Failed');
     }
   }
 
