@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:personal_dictionary/screens/words_list.dart';
+import 'package:personal_dictionary/screens/vocab_list.dart';
 import 'package:personal_dictionary/utils/snackbar_messaging.dart';
 import 'package:rive/rive.dart';
 
