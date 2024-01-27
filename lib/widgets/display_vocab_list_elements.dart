@@ -1,17 +1,17 @@
 import 'package:flutter/cupertino.dart';
 
-class AddWordListWidget extends StatefulWidget {
-  const AddWordListWidget({required this.listToDisplay, super.key});
+class DisplayVocabListElement extends StatefulWidget {
+  const DisplayVocabListElement({required this.listToDisplay, super.key});
 
   final List<String> listToDisplay;
 
   @override
   State<StatefulWidget> createState() {
-    return _AddWordListWidgetState();
+    return _DisplayVocabListElementState();
   }
 }
 
-class _AddWordListWidgetState extends State<AddWordListWidget> {
+class _DisplayVocabListElementState extends State<DisplayVocabListElement> {
   @override
   Widget build(BuildContext context) {
     return Column(

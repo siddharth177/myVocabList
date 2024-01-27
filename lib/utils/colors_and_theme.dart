@@ -8,8 +8,10 @@ var kDarkColorScheme =
 var kLightThemeData = ThemeData().copyWith(
   colorScheme: kLightColorScheme,
   brightness: Brightness.light,
+  cardTheme: const CardTheme().copyWith(color: Colors.white),
 );
 var kDarkThemeData = kLightThemeData.copyWith(
   colorScheme: kDarkColorScheme,
   brightness: Brightness.dark,
+  cardTheme: const CardTheme().copyWith(color: Colors.black),
 );

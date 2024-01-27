@@ -52,7 +52,9 @@ class _WordsListScreenState extends State<WordsListScreen> {
     }
 
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
       appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         toolbarHeight: 80,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
