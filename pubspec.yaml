@@ -72,6 +72,7 @@ flutter:
   assets:
     - assets/animations/rive/spin.riv
     - assets/animations/rive/geometric_loading_animation.riv
+    - assets/animations/rive/sphere_animation.riv
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

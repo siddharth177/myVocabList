@@ -26,7 +26,13 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          const RiveAnimation.asset('assets/animations/rive/spin.riv'),
+          Container(
+            color: Theme.of(context).brightness == Brightness.dark
+                ? const Color.fromARGB(200, 123, 123, 123)
+                : Colors.transparent,
+          ),
+          const RiveAnimation.asset(
+              'assets/animations/rive/sphere_animation.riv'),
           Positioned.fill(
               child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 20, sigmaY: 10),
@@ -52,7 +58,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(20.0),
+                    padding: const EdgeInsets.fromLTRB(30.0, 20, 20, 30),
                     child: Text(
                       isForgotPassword
                           ? 'We got You!'
@@ -64,6 +70,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                         height: 1.2,
                         fontFamily: GoogleFonts.openSans().fontFamily,
                         fontWeight: FontWeight.w300,
+                        color: Colors.black,
                       ),
                     ),
                   ),
@@ -73,11 +80,23 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                       children: [
                         Card(
                           elevation: 40,
-                          color: Colors.white.withOpacity(0.65),
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white10.withOpacity(0.65)
+                              : Colors.white.withOpacity(0.65),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                            side: BorderSide(
+                              color: Theme.of(context).brightness ==
+                                      Brightness.dark
+                                  ? Colors.white70
+                                  : Colors.transparent,
+                            ),
+                          ),
                           margin: const EdgeInsets.all(20),
                           child: SingleChildScrollView(
                             child: Padding(
-                              padding: const EdgeInsets.all(16),
+                              padding:
+                                  const EdgeInsets.fromLTRB(16, 16, 16, 10),
                               child: isForgotPassword
                                   ? const ForgotPasswordWidget()
                                   : const LoginSignUpWidget(),

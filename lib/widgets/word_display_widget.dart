@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:personal_dictionary/models/word_meaning.dart';
-import 'package:personal_dictionary/widgets/display_vocab_list_elements.dart';
+import 'package:personal_dictionary/widgets/display_vocab_list_element.dart';
 
 import 'add_word_widget.dart';
 

@@ -59,11 +59,13 @@ class _ForgotPasswordWidgetState extends ConsumerState<ForgotPasswordWidget> {
     return Form(
       key: _formKey,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const Text(
-              'Enter the registered email address. You will receive an email containing link to reset password.'),
+            'Enter the registered email address. You will receive an email containing link to reset password.',
+            style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
+          ),
           TextFormField(
             controller: emailController,
             cursorColor: Colors.white,
@@ -76,9 +78,15 @@ class _ForgotPasswordWidgetState extends ConsumerState<ForgotPasswordWidget> {
                 ? 'Enter a valid email'
                 : null,
           ),
+          SizedBox(
+            height: 20,
+          ),
           ElevatedButton(
             onPressed: resetPassword,
             child: const Text('Reset Password'),
+          ),
+          SizedBox(
+            height: 5,
           ),
           ElevatedButton(
             onPressed: () {

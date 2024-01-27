@@ -11,7 +11,11 @@ var kLightThemeData = ThemeData().copyWith(
   cardColor: Colors.white,
 );
 var kDarkThemeData = kLightThemeData.copyWith(
-  colorScheme: kDarkColorScheme,
+  colorScheme: kLightColorScheme,
   brightness: Brightness.dark,
+  cardTheme: const CardTheme().copyWith(
+    color: Colors.black,
+    elevation: 200,
+  ),
   cardColor: Colors.black,
 );

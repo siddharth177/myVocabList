@@ -93,7 +93,7 @@ class _LoginSignUpWidgetState extends ConsumerState<LoginSignUpWidget> {
             },
           ),
           const SizedBox(
-            height: 12,
+            height: 20,
           ),
           _isLogin
               ? ElevatedButton(
@@ -107,7 +107,7 @@ class _LoginSignUpWidgetState extends ConsumerState<LoginSignUpWidget> {
               : const SizedBox(
                   height: 0,
                 ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           ElevatedButton(
             onPressed: _submit,
             style: ElevatedButton.styleFrom(
@@ -115,6 +115,7 @@ class _LoginSignUpWidgetState extends ConsumerState<LoginSignUpWidget> {
             ),
             child: Text(_isLogin ? 'Login' : 'Signup'),
           ),
+          const SizedBox(height: 5),
           TextButton(
             onPressed: () {
               setState(() {
