@@ -143,27 +143,6 @@ class _WordsListScreenState extends State<WordsListScreen> {
           child: const Icon(Icons.add),
         ),
       ),
-      // bottomNavigationBar: const BottomAppBar(
-      //   height: 40,
-      //   elevation: 0,
-      //   color: Colors.transparent,
-      //   surfaceTintColor: Colors.transparent,
-      //   shape: AutomaticNotchedShape(
-      //       RoundedRectangleBorder(
-      //         borderRadius: BorderRadius.vertical(
-      //           top: Radius.circular(20),
-      //         ),
-      //       ),
-      //       RoundedRectangleBorder(
-      //         borderRadius: BorderRadius.all(
-      //           Radius.circular(20),
-      //         ),
-      //       ) //
-      //       ),
-      //   child: Row(
-      //     children: [],
-      //   ),
-      // ),
     );
   }
 }
