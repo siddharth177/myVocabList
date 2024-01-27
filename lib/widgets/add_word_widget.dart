@@ -118,7 +118,7 @@ class _AddWordWidgetState extends State<AddWordWidget> {
               .top),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("Add To Your Vocab"),
+          title: const Text("My Word"),
         ),
         body: Form(
           key: _formKey,

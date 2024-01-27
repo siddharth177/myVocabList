@@ -19,18 +19,36 @@ class WordDisplayWidget extends StatefulWidget {
 }
 
 class _WordDisplayWidgetState extends State<WordDisplayWidget> {
+  void _editWordField() {
+    showModalBottomSheet(
+      context: context,
+      builder: (ctx) {
+        return AddWordWidget(
+          word: widget.wordMeaning.word,
+          root: widget.wordMeaning.root,
+          phonatic: widget.wordMeaning.phonatic,
+          wordClass: widget.wordMeaning.wordClass,
+          examples: widget.wordMeaning.examples,
+          usages: widget.wordMeaning.usages,
+          meanings: widget.wordMeaning.meanings,
+        );
+      },
+      isScrollControlled: true,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      margin: const EdgeInsets.all(12),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      margin: const EdgeInsets.fromLTRB(12, 12, 12, 0),
       color: Theme.of(context).cardTheme.color,
       child: InkWell(
-        borderRadius: BorderRadius.circular(20),
-        splashColor: Colors.green,
-        highlightColor: Colors.yellow,
+        borderRadius: BorderRadius.circular(10),
+        splashColor: Colors.white,
+        // highlightColor: Colors.yellow,
         onTap: () {
-          print('tapped');
+          _editWordField();
         },
         child: Slidable(
           key: ValueKey(widget.wordMeaning.word),
@@ -39,23 +57,9 @@ class _WordDisplayWidgetState extends State<WordDisplayWidget> {
             children: [
               SlidableAction(
                 onPressed: (context) {
-                  showModalBottomSheet(
-                    context: context,
-                    builder: (ctx) {
-                      return AddWordWidget(
-                        word: widget.wordMeaning.word,
-                        root: widget.wordMeaning.root,
-                        phonatic: widget.wordMeaning.phonatic,
-                        wordClass: widget.wordMeaning.wordClass,
-                        examples: widget.wordMeaning.examples,
-                        usages: widget.wordMeaning.usages,
-                        meanings: widget.wordMeaning.meanings,
-                      );
-                    },
-                    isScrollControlled: true,
-                  );
+                  _editWordField();
                 },
-                backgroundColor: Colors.blue,
+                backgroundColor: Theme.of(context).primaryColor,
                 icon: Icons.edit,
                 label: 'Edit',
               )
@@ -83,7 +87,7 @@ class _WordDisplayWidgetState extends State<WordDisplayWidget> {
                       .doc(widget.wordMeaning.word)
                       .delete();
                 },
-                backgroundColor: Colors.red,
+                backgroundColor: Theme.of(context).disabledColor,
                 icon: Icons.delete,
                 label: 'Delete',
               )
